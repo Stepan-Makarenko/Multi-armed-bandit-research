@@ -34,6 +34,7 @@ class MultiArmedBanditEnv(Env):
         return 0, reward, done, {}
 
     def reset(self) -> int:
+        self.curr_step = 0
         return 0  # Resetting a bandit environment does not change its state
 
     def render(self, mode: str = 'human', close: bool = False) -> None:
