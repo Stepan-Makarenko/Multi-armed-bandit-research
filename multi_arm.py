@@ -9,16 +9,16 @@ class MultiArmedBanditEnv(Env):
     """
     metadata = {'render.modes': ['human']}
 
-    def __init__(self, n_arms: int = 10, max_steps: int =10000, seed: Optional[int] = None) -> None:
+    def __init__(self, probabilities: List[float] = [0.3, 0.5], max_steps: int = 10000, seed: Optional[int] = None) -> None:
         super(MultiArmedBanditEnv, self).__init__()
-        self.n_arms = n_arms
+        self.n_arms = len(probabilities)
         self.max_steps = max_steps
         self.curr_step = 0
-        self.action_space = spaces.Discrete(n_arms)
+        self.action_space = spaces.Discrete(self.n_arms)
         self.observation_space = spaces.Discrete(1)  # No real observations, just a dummy space
 
         self.seed(seed)
-        self.probabilities = self.np_random.random(n_arms)  # Randomly set the probability of each arm
+        self.probabilities = probabilities
 
     def seed(self, seed: Optional[int] = None) -> List[int]:
         self.np_random, seed = utils.seeding.np_random(seed)
@@ -29,7 +29,7 @@ class MultiArmedBanditEnv(Env):
         self.curr_step += 1
         
         # Reward is 1 with probability of the chosen arm, otherwise 0
-        reward = 1 if self.np_random.random() < self.probabilities[action] else 0
+        reward =  self.np_random.binomial(1, self.probabilities[action])
         done = self.max_steps < self.curr_step
         return 0, reward, done, {}
 
