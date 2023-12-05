@@ -19,6 +19,7 @@ class MultiArmedBanditEnv(Env):
 
         self.seed(seed)
         self.probabilities = probabilities
+        self.opt_action = np.argmax(self.probabilities)
 
     def seed(self, seed: Optional[int] = None) -> List[int]:
         self.np_random, seed = utils.seeding.np_random(seed)
@@ -32,6 +33,9 @@ class MultiArmedBanditEnv(Env):
         reward =  self.np_random.binomial(1, self.probabilities[action])
         done = self.max_steps < self.curr_step
         return 0, reward, done, {}
+
+    def get_optimal_action(self):
+        return self.opt_action
 
     def reset(self) -> int:
         self.curr_step = 0
