@@ -1,0 +1,37 @@
+{
+    "seed": 42,
+    "envs": [
+        {
+            "repeat": 5,
+            "class": "MultiArmedBernoulliBanditEnv",
+            "options": {
+                "probabilities": {"class": "list", "value": [0.1, 0.5, 0.9]}
+            }
+        },
+        {
+            "repeat": 5,
+            "class": "MultiArmedGausianBanditEnv",
+            "num_arms": 3,
+            "options": {
+                "means": {"class": "random_list", "size": 3},
+                "variances":  {"class": "repeated_list", "value": [1.0], "times": 3}
+            }
+        }
+    ],
+    "agents": [
+        {
+            "class": "RandomAgent",
+            "options": {}
+        },
+        {
+            "class": "ExploreAndGreed",
+            "options": {
+                "exploration_prob": {"class": "float", "value": 1.0}
+            }
+        },
+        {
+            "class": "UCB1",
+            "options": {}
+        }
+    ]
+}
