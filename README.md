@@ -9,3 +9,8 @@ Run the following command to run experiment configured by gaussian_testbed.json:
 ```bash
 python3 run.py --config ./configs/gaussian_testbed.json -pp ./plots/gausian_testbed
 ```
+## Output plots
+![1](plots/gausian_testbed_opt_action.png)
+
+
+![2](plots/gausian_testbed_avg_reward.png)
