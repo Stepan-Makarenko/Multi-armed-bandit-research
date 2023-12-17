@@ -1,7 +1,8 @@
 from typing import Dict, List
 import numpy as np
 
-DEFAULT_FLOAT_VALUE = 0
+DEFAULT_FLOAT_VALUE = 0.0
+DEFAULT_INT_VALUE = 0
 
 
 def parse_list_option(option_config: Dict) -> np.ndarray:
@@ -22,4 +23,9 @@ def parse_random_list_option(option_config: Dict) -> np.ndarray:
 
 def parse_float_option(option_config: Dict) -> float:
     option_value = option_config.get("value", DEFAULT_FLOAT_VALUE)
+    return option_value
+
+
+def parse_int_option(option_config: Dict) -> int:
+    option_value = option_config.get("value", DEFAULT_INT_VALUE)
     return option_value

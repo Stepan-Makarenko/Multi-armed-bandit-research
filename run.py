@@ -10,7 +10,7 @@ from env_factory import create_environment
 from utils import set_seed, run_experiment, average_results
 
 
-def main(config_file):
+def main(config_file, plot_prefix):
     # Load the config file
     with open(config_file, "r") as file:
         config = json.load(file)
@@ -20,9 +20,6 @@ def main(config_file):
     set_seed(seed)
 
     # Experiment setup
-    num_experiments = 1000
-    num_arms = 10
-
     env_generator = create_environment(config["envs"])
     agent_rewards = defaultdict(list)
     agent_opt_action = defaultdict(list)
@@ -44,15 +41,36 @@ def main(config_file):
     }
 
     # plotting
+    # average reward
+    plt.figure(figsize=(12, 8))
+    for agent_name, rewards in average_agent_rewards.items():
+        plt.plot(rewards, label=agent_name)
+
+    # plt.title('Average Rewards of Agents in Bernoulli Multi-Armed Bandit Environments')
+    fontsize = 20
+    plt.xlabel("Episodes", fontsize=fontsize)
+    plt.ylabel("Average Reward", fontsize=fontsize)
+    plt.legend()
+    # Adding a grid
+    plt.grid(True, which="both", axis="both", linestyle="-", linewidth=0.5)
+    # plt.show()
+    save_path = plot_prefix + "_avg_reward"
+    plt.savefig(save_path)
+
+    # % of optimal actions
     plt.figure(figsize=(12, 8))
     for agent_name, opt_action in average_agent_opt_action.items():
         plt.plot(opt_action * 100, label=agent_name)
 
     # plt.title('Optimal action % of Agents in Bernoulli Multi-Armed Bandit Environments')
-    plt.xlabel("Episodes")
-    plt.ylabel("Optimal action %")
+    plt.xlabel("Episodes", fontsize=fontsize)
+    plt.ylabel("Optimal action %", fontsize=fontsize)
     plt.legend()
-    plt.show()
+    # Adding a grid
+    plt.grid(True, which="both", axis="both", linestyle="-", linewidth=0.5)
+    # plt.show()
+    save_path = plot_prefix + "_opt_action"
+    plt.savefig(save_path)
 
 
 def parse_args():
@@ -67,10 +85,19 @@ def parse_args():
         required=True,
         help="Path to the configuration JSON file.",
     )
+    parser.add_argument(
+        "-pp",
+        "--plot_prefix",
+        dest="plot_prefix",
+        default="./example_plot",
+        type=str,
+        required=False,
+        help="Path to store resulting plots",
+    )
 
     return parser.parse_args()
 
 
 if __name__ == "__main__":
     args = parse_args()
-    main(args.config_file)
+    main(args.config_file, args.plot_prefix)

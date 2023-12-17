@@ -6,13 +6,15 @@ from options import (
     parse_random_list_option,
     parse_repeated_list_option,
     parse_float_option,
+    parse_int_option,
 )
 
 OPTION_FACTORY = {
     "list": parse_list_option,
     "repeated_list": parse_repeated_list_option,
     "random_list": parse_random_list_option,
-    "float": parse_float_option
+    "float": parse_float_option,
+    "int": parse_int_option
     # Add other environment classes here
 }
 

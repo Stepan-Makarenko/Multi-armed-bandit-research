@@ -1,0 +1,31 @@
+{
+    "seed": 42,
+    "envs": [
+        {
+            "repeat": 100,
+            "class": "MultiArmedGausianBanditEnv",
+            "num_arms": 10,
+            "options": {
+                "max_steps": {"class": "int", "value": 1000},
+                "means": {"class": "random_list", "size": 10},
+                "variances":  {"class": "repeated_list", "value": [1.0], "times": 10}
+            }
+        }
+    ],
+    "agents": [
+        {
+            "class": "RandomAgent",
+            "options": {}
+        },
+        {
+            "class": "ExploreAndGreed",
+            "options": {
+                "exploration_prob": {"class": "float", "value": 0.1}
+            }
+        },
+        {
+            "class": "UCB1",
+            "options": {}
+        }
+    ]
+}
